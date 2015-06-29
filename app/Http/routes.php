@@ -37,6 +37,9 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth.api'], function () {
     Route::get('users/{term}/{id}', 'UserController@show');
     Route::post('users/{id}/avatar', 'AvatarController@store');
 
+    // Avatar pre-signed URL
+    Route::get('avatar-presigned-url/{id}', 'AvatarController@showPresignedUrl');
+
     // Signup Groups.
     Route::get('signup-group/{id}', 'SignupGroupController@show');
 

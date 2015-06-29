@@ -12,14 +12,14 @@ class AvatarController extends Controller
         $this->aws = $aws;
     }
 
-   /**
-   * Store a new avatar for a user.
-   * POST /users/{id}/avatar
-   *
-   * @param Request $request
-   * @param $id - User ID
-   * @return Response
-   */
+    /**
+     * Store a new avatar for a user.
+     * POST /users/{id}/avatar
+     *
+     * @param Request $request
+     * @param $id - User ID
+     * @return Response
+     */
     public function store(Request $request, $id)
     {
         if ($request->file('photo')) {
@@ -41,6 +41,25 @@ class AvatarController extends Controller
 
         // Respond to user with success and photo URL
         return $this->respond(['url' => $filename]);
+    }
+
+    /**
+     * @todo comment me
+     */
+    public function showPresignedUrl($id)
+    {
+        $user = User::where('_id', $id)->first();
+
+        if ($user) {
+            $presignedUrl = $this->aws->generatePresignedUrl($user['_id']);
+            $utf8encoded = utf8_encode($presignedUrl);
+
+            return $this->respond(['presigned_url' => $presignedUrl, 'utf8' => $utf8encoded]);
+        }
+        else {
+            return $this->respond('User does not exist', 404); // @todo is this an ok error response?
+        }
+
     }
 }
 
