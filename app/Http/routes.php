@@ -46,4 +46,23 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->get('scopes', function() {
         return \Northstar\Models\ApiKey::scopes();
     });
+
+
+    // OAuth
+    $router->get('/tokeninfo', function (\Illuminate\Http\Request $request) {
+        /**
+         * @var $server \League\OAuth2\Server\ResourceServer
+         */
+        $server = app('oauth2');
+        $accessToken = $server->getAccessToken();
+        $session = $server->getSessionStorage()->getByAccessToken($accessToken);
+        $token = [
+            'owner_id' => $session->getOwnerId(),
+            'owner_type' => $session->getOwnerType(),
+            'access_token' => $accessToken,
+            'client_id' => $session->getClient()->getId(),
+            'scopes' => $accessToken->getScopes(),
+        ];
+        return $token;
+    });
 });
