@@ -7,6 +7,13 @@ use Jenssegers\Mongodb\Model;
 class Token extends Model
 {
     /**
+     * The connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mongodb';
+
+    /**
      * The database collection used by the model.
      *
      * @var string

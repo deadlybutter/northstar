@@ -7,6 +7,13 @@ use Jenssegers\Mongodb\Model;
 class Campaign extends Model
 {
     /**
+     * The connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mongodb';
+
+    /**
      * Guarded attributes
      */
     protected $guarded = ['_id'];

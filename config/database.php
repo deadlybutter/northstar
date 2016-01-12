@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => 'mongodb',
+    'default' => 'mysql',
 
     /*
     |--------------------------------------------------------------------------
@@ -46,14 +46,26 @@ return [
 
     'connections' => [
 
+        'mysql' => [
+            'driver' => 'mysql',
+            'host' => env('MYSQL_HOST', 'localhost'),
+            'database' => env('MYSQL_DATABASE', 'forge'),
+            'username' => env('MYSQL_USERNAME', 'forge'),
+            'password' => env('MYSQL_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+        ],
+
         'mongodb' => [
             'driver' => 'mongodb',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', 27017),
-            'username' => env('DB_USERNAME', ''),
-            'password' => env('DB_PASSWORD', ''),
-            'database' => env('DB_NAME', 'userapi'),
-            'options'  => env('DB_REPL_SET_NAME') ? ['replicaSet' => env('DB_REPL_SET_NAME', 'rs0')] : [],
+            'host' => env('MONGODB_HOST', 'localhost'),
+            'port' => env('MONGODB_PORT', 27017),
+            'username' => env('MONGODB_USERNAME', ''),
+            'password' => env('MONGODB_PASSWORD', ''),
+            'database' => env('MONGODB_NAME', 'userapi'),
+            'options'  => env('MONGODB_REPL_SET_NAME') ? ['replicaSet' => env('MONGODB_REPL_SET_NAME', 'rs0')] : [],
         ],
 
     ],

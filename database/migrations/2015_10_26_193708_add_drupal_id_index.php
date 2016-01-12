@@ -11,7 +11,7 @@ class AddDrupalIDIndex extends Migration
      */
     public function up()
     {
-        Schema::table('users', function ($collection) {
+        Schema::connection('mongodb')->table('users', function ($collection) {
             $collection->index('drupal_id', ['sparse' => true]);
         });
     }

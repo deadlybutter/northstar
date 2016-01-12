@@ -46,4 +46,8 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->get('scopes', function() {
         return \Northstar\Models\ApiKey::scopes();
     });
+
+    $router->post('oauth/access_token', function() {
+        return response()->json(\Authorizer::issueAccessToken());
+    });
 });

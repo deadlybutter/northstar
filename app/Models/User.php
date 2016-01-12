@@ -14,6 +14,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 {
     use Authenticatable, CanResetPassword;
 
+    /**
+     * The connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = 'mongodb';
+
     protected $fillable = [
         'email', 'mobile', 'password', 'drupal_password',
 
