@@ -159,6 +159,7 @@ return [
         Northstar\Providers\AppServiceProvider::class,
         Northstar\Providers\AuthServiceProvider::class,
         Northstar\Providers\EventServiceProvider::class,
+        Northstar\Providers\OAuthServiceProvider::class,
         Northstar\Providers\RouteServiceProvider::class,
         Northstar\Providers\ValidationServiceProvider::class,
 

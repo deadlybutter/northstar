@@ -25,6 +25,45 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->post('auth/verify', 'AuthController@verify');
     $router->post('auth/register', 'AuthController@register');
 
+    // OAuth2
+    $router->post('oauth/token', function(Illuminate\Http\Request $request)
+    {
+        // @TODO We can "build" a response from legacy endpoints
+        if(! $request->has('grant_type')) {
+            $request->merge(['grant_type' => 'user_credentials']);
+        }
+
+        $bridgedRequest  = \OAuth2\HttpFoundationBridge\Request::createFromRequest($request);
+        $bridgedResponse = new \OAuth2\HttpFoundationBridge\Response();
+
+        $bridgedResponse = app('oauth2')->handleTokenRequest($bridgedRequest, $bridgedResponse);
+
+        return $bridgedResponse;
+    });
+
+    // Example protected route
+    $router->get('private', function(Illuminate\Http\Request $request)
+    {
+        $bridgedRequest  = OAuth2\HttpFoundationBridge\Request::createFromRequest($request);
+        $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
+
+        if (app('oauth2')->verifyResourceRequest($bridgedRequest, $bridgedResponse)) {
+
+            $token = app('oauth2')->getAccessTokenData($bridgedRequest);
+
+            return response()->json([
+                'private' => 'stuff',
+                'user_id' => $token['user_id'],
+                'client'  => $token['client_id'],
+            ]);
+        }
+        else {
+            return response()->json([
+                'error' => 'Unauthorized'
+            ], $bridgedResponse->getStatusCode());
+        }
+    });
+
     // Users
     $router->resource('users', 'UserController', ['except' => ['show', 'update']]);
     $router->get('users/{term}/{id}', 'UserController@show');
